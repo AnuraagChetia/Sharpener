@@ -1,5 +1,3 @@
-//First Deliverable
-
 
 const posts = [
   {
@@ -66,9 +64,9 @@ function deletePost() {
   });
 }
 
-createPost({ title: "Post three", body: "This is post three" })
-  .then(getPosts)
-  .catch((err) => console.log(err));
+// createPost({ title: "Post three", body: "This is post three" })
+//   .then(getPosts)
+//   .catch((err) => console.log(err));
 
 // deletePost().catch((err) => console.log(err));
 // setTimeout(() => {
@@ -81,16 +79,24 @@ createPost({ title: "Post three", body: "This is post three" })
 //   deletePost().catch((err) => console.log(err));
 // }, 4000);
 
-setTimeout(() => {
-  createPost({ title: "Post four", body: "This is post four" })
-    .then(() => {
-      getPosts();
-      setTimeout(() => {
-        deletePost().catch((err) => console.log(err));
-      }, 1000);
-    })
-    .catch((err) => console.log(err));
-}, 8000);
+// setTimeout(() => {
+//   createPost({ title: "Post four", body: "This is post four" })
+//     .then(() => {
+//       getPosts();
+//       setTimeout(() => {
+//         deletePost().catch((err) => console.log(err));
+//       }, 1000);
+//     })
+//     .catch((err) => console.log(err));
+// }, 8000);
+
+const createNewPost = async (post) => {
+  await createPost(post);
+  await getPosts();
+  deletePost();
+};
+createNewPost({ title: "Post three", body: "This is post three" });
+createNewPost({ title: "Post four", body: "This is post four" });
 
 // const promise1 = Promise.resolve("Hello World");
 // const prommise2 = 10;
@@ -104,24 +110,19 @@ let user = {
 };
 
 const updateLastUserActivityTime = new Promise((resolve, reject) =>
-//1st syntax
+  //1st syntax
   // setTimeout(resolve, 1000, () => {
   //   user.lastUserActivityTime = new Date().toDateString();
   // })
-//2nd syntax
-  resolve(
-    setTimeout(() => {
-      user.lastUserActivityTime = new Date().toDateString();
-    },1000)
-  )
+  //2nd syntax
+  resolve((user.lastUserActivityTime = new Date().toDateString()))
 );
 
-Promise.all([createPost(), updateLastUserActivityTime]).then(() => {
+Promise.all([createPost, updateLastUserActivityTime]).then(() => {
   console.log(posts);
   console.log(user.lastUserActivityTime);
 });
-Promise.all([deletePost(), updateLastUserActivityTime]).then(() => {
+Promise.all([deletePost, updateLastUserActivityTime]).then(() => {
   console.log(posts);
   console.log(user.lastUserActivityTime);
 });
-
